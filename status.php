@@ -1,28 +1,29 @@
 <?php
 include_once('connection.php');
+session_start();
 
-$id=$_GET['i'];
+$id = $_GET['i'];
 $s = $_GET['s'];
 
 if(isset($_POST['update'])){
   $Id= $_POST['id'];
    $status = $_POST['status'];
    
-    $query = "update garbageinfo set status='$status' WHERE Id='$Id'" ;
+    $query = "update garbageinfo set status= '$status' WHERE Id= '$Id' " ;
    
-    $data = mysqli_query($db,$query);
+    $data = mysqli_query($con,$query);
     
     
     if($data) {
 
-        echo "<div class = 'alert alert-success'><span class='fa fa-check'> Compain Registered Successfully!</span></div>";  
+        echo  "<div class = 'alert alert-success'><span class='fa fa-check'> Status Updated!</span></div>";  
         
-       header("Location: http://localhost/EmailVerification/adminlogin/index.php", TRUE, 301);
+       header("Location: http://localhost/EmailVerification/adminsignup/index.php", TRUE, 301);
        exit();
   
     }
     else {
-        echo "Failed to Update!";
+	echo  "<div class = 'alert alert-danger'><span class='fa fa-check'> failed to  update Status !</span></div>";  
     }
 
 
@@ -54,8 +55,8 @@ if(isset($_POST['update'])){
         <div class="form-group">
 					<label class="control-label col-sm-2" for="status">Status:</label>
 					<div class="col-sm-10">  
-					<input type='hidden'value ="<?php echo $id?>"class='id'>        
-                    <select class="form-control" id="status" name="status" value ="<?php echo $s?>"required >
+					<input type='hidden' value ="<?php echo "$id"; ?>" name='id'>        
+                    <select class="form-control" id="status" name="status" value ="<?php echo "$s"; ?>"required >
 						   <option class="form-control" >Pending</option>
                            <option class="form-control" >Completed</option>
 						   <option class="form-control" >please do valid complain  </option>

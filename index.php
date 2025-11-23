@@ -1,3 +1,27 @@
+<?php 
+require_once 'controllerUserData.php';
+$email = $_SESSION['email'];
+$password = $_SESSION['password'];
+if($email != false && $password != false){
+    $sql = "SELECT * FROM adminlogin_tbl WHERE email = '$email'";
+    $run_Sql = mysqli_query($con, $sql);
+    if($run_Sql){
+        $fetch_info = mysqli_fetch_assoc($run_Sql);
+        $status = $fetch_info['status'];
+        $code = $fetch_info['code'];
+        if($status == "verified"){
+            if($code != 0){
+                header('Location: reset-code.php');
+            }
+        }else{
+            header('Location: user-otp.php');
+        }
+    }
+}else{
+    header('Location: adminlogin.php');
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head> 
@@ -171,7 +195,7 @@
 </head>
 <body>
       <!-- Favicons -->
-  <link href="adminlogin/Capture.PNG" rel="icon">
+  <link href="adminsignup/Capture.PNG" rel="icon">
 
 <div id="throbber" style="display:none; min-height:120px;"></div>
 <div id="noty-holder"></div>
@@ -193,21 +217,21 @@
         <!-- Top Menu Items -->
         <ul class="nav navbar-right top-nav">           
             <li>
-                <a href="#" data-placement="bottom"  data-toggle="tooltip">Admin User 
+                <a href="#" data-placement="bottom"  data-toggle="tooltip"> <h5><?php echo 'Admin:'.$email ;?></h5> 
             </li>
         </ul>
         <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
                 <li>
-                    <a href="http://localhost/EmailVerification/index.html" data-toggle="collapse" data-target="#submenu-1"><i class="fa fa-fw fa-search"></i><mark> Dashboard</mark> <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                    <a href="#Dashboard" data-toggle="collapse" data-target="#submenu-1"><i class="fa fa-fw fa-search"></i><mark> Dashboard</mark> <i class="fa fa-fw fa-angle-down pull-right"></i></a>
                    
                 </li>
                 <li>
-                    <a href="sugerencias"><i class="fa fa-fw fa-paper-plane-o"></i> Change password</a>
+                    <a href="forgot-password.php"><i class="fa fa-fw fa-paper-plane-o"></i> Change password</a>
                 </li>
                 <li>
-                    <a href="faq"><i class="fa fa-fw fa fa-question-circle"></i> Logout</a>
+                    <a href="logout-user.php"><i class="fa fa-fw fa fa-question-circle"></i> Logout</a>
                 </li>
             </ul>
         </div>
@@ -243,7 +267,7 @@
    include("connection.php");
    $hostForImage ="http://localhost/EmailVerification/phpGmailSMTP/upload/";
    $query = "select * from garbageinfo";
-   $data = mysqli_query($db,$query);
+   $data = mysqli_query($con,$query);
    $total = mysqli_num_rows($data);
      
    if($total!=0) {
@@ -252,7 +276,7 @@
       while($result=mysqli_fetch_assoc($data)){
 
      echo "
-           <tr class='panel panel-blue'>
+           <tr class='panel panel'>
 
                <td>   ".$result['Id']." </td>
                <td><a href = '".$hostForImage.$result['file']. "'><img src = '".$hostForImage.$result['file']. " 'height='200'width='200'/></a> </td>               
@@ -285,24 +309,24 @@
     <!-- /#page-wrapper -->
 </div><!-- /#wrapper -->
 <script>
-$(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-    $(".side-nav .collapse").on("hide.bs.collapse", function() {                   
-        $(this).prev().find(".fa").eq(1).removeClass("fa-angle-right").addClass("fa-angle-down");
-    });
-    $('.side-nav .collapse').on("show.bs.collapse", function() {                        
-        $(this).prev().find(".fa").eq(1).removeClass("fa-angle-down").addClass("fa-angle-right");        
-    });
-})  
+// $(function(){
+//     $('[data-toggle="tooltip"]').tooltip();
+//     $(".side-nav .collapse").on("hide.bs.collapse", function() {                   
+//         $(this).prev().find(".fa").eq(1).removeClass("fa-angle-right").addClass("fa-angle-down");
+//     });
+//     $('.side-nav .collapse').on("show.bs.collapse", function() {                        
+//         $(this).prev().find(".fa").eq(1).removeClass("fa-angle-down").addClass("fa-angle-right");        
+//     });
+// })  
 
-var delId;
-function modalLauch(id){
-    delId=id;
-    $('#toDeleteId').val(id);
-}
-function confirmDelete(){
-    window.location.replace("http://localhost/EmailVerification/adminlogin/admindelete.php?i="+delId);
-}
+// var delId;
+// function modalLauch(id){
+//     delId=id;
+//     $('#toDeleteId').val(id);
+// }
+// function confirmDelete(){
+//     window.location.replace("http://localhost/EmailVerification/adminsignup/admindelete.php?i="+delId);
+// }
 </script>
 </body>
 </html>
